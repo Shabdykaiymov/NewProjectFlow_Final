@@ -133,7 +133,7 @@ class ProfileUpdateView(APIView):
         current_password = request.data.get('current_password')
         new_password = request.data.get('new_password')
 
-        #  Обновление имени и фамилии
+        # Обновление имени и фамилии
         if first_name is not None:
             user.first_name = first_name
         if last_name is not None:
