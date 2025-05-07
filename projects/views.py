@@ -19,10 +19,21 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Возвращает только проекты, в которых пользователь является участником
+        Возвращает только проекты, в которых пользователь является участником,
+        с возможностью поиска по названию и описанию
         """
         user = self.request.user
-        return Project.objects.filter(members=user).order_by('-created_at')
+        queryset = Project.objects.filter(members=user).order_by('-created_at')
+
+        # Добавляем поиск
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(description__icontains=search_query)
+            )
+
+        return queryset
 
     def get_serializer_class(self):
         """
@@ -159,4 +170,3 @@ class ProjectViewSet(viewsets.ModelViewSet):
         users = User.objects.all()
         serializer = ProjectMemberSerializer(users, many=True)
         return Response(serializer.data)
-
