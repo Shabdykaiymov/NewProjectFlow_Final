@@ -28,7 +28,8 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Возвращает задачи, к которым у пользователя есть доступ
+        Возвращает задачи, к которым у пользователя есть доступ,
+        с возможностью поиска по заголовку, описанию и проекту
         """
         user = self.request.user
 
@@ -37,6 +38,15 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         # Формируем базовый запрос
         queryset = Task.objects.filter(project__in=projects)
+
+        # Добавляем поиск
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(project__name__icontains=search_query)
+            )
 
         # Фильтрация по проекту, если указан в запросе
         project_id = self.request.query_params.get('project')

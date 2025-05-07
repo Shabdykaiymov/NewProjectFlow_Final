@@ -11,6 +11,14 @@
         </button>
     </div>
     
+    <!-- Добавленная форма поиска -->
+    <div class="mb-4">
+        <form id="searchForm" class="d-flex">
+            <input type="text" class="form-control me-2" id="searchInput" placeholder="Поиск по названию или описанию...">
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+    </div>
+
     <div class="row" id="projectsContainer">
         <div class="col-12 text-center py-5">
             <div class="spinner-border text-primary" role="status">
@@ -56,23 +64,35 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Загружаем проекты
         loadProjects();
-        
+
         // Обработчики событий
         document.getElementById('newProjectBtn').addEventListener('click', function() {
             openProjectModal();
         });
-        
+
         document.getElementById('saveProjectBtn').addEventListener('click', function() {
             saveProject();
         });
+
+        // Обработчик формы поиска
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchQuery = document.getElementById('searchInput').value;
+            loadProjects(searchQuery);
+        });
     });
-    
+
     /**
      * Загружает список проектов
      */
-    async function loadProjects() {
+    async function loadProjects(searchQuery = '') {
         try {
-            const response = await fetch('/api/projects/', {
+            let url = '/api/projects/';
+            if (searchQuery) {
+                url += `?search=${encodeURIComponent(searchQuery)}`;
+            }
+
+            const response = await fetch(url, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 }

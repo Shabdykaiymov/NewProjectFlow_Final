@@ -9,6 +9,12 @@
     </div>
 
     <div class="mb-4">
+        <!-- Добавляем форму поиска -->
+        <form id="searchForm" class="d-flex mb-3">
+            <input type="text" class="form-control me-2" id="searchInput" placeholder="Поиск по заголовку, описанию или проекту...">
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+
         <div class="filters d-flex flex-wrap gap-2">
             <div class="btn-group" role="group">
                 <input type="radio" class="btn-check" name="taskTypeOptions" id="allTasksBtn" autocomplete="off" checked>
@@ -183,12 +189,19 @@
         document.getElementById('addCommentBtn').addEventListener('click', function() {
             addComment();
         });
+
+        // Обработчик формы поиска
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchQuery = document.getElementById('searchInput').value;
+            loadTasks(searchQuery);
+        });
     });
 
     /**
      * Загружает список задач с учетом фильтров
      */
-    async function loadTasks() {
+    async function loadTasks(searchQuery = '') {
         try {
             const projectFilter = document.getElementById('projectFilter').value;
             const statusFilter = document.getElementById('statusFilter').value;
@@ -203,6 +216,9 @@
             }
 
             let url = '/api/tasks/?';
+            if (searchQuery) {
+                url += `search=${encodeURIComponent(searchQuery)}&`;
+            }
             if (projectFilter) url += `project=${projectFilter}&`;
             if (statusFilter) url += `status=${statusFilter}&`;
             if (priorityFilter) url += `priority=${priorityFilter}&`;
@@ -556,14 +572,14 @@
                 },
                 body: JSON.stringify({ text: commentText })
             });
-            
+
             if (!response.ok) {
                 throw new Error('Не удалось добавить комментарий');
             }
-            
+
             // Очищаем поле ввода
             document.getElementById('newComment').value = '';
-            
+
             // Перезагружаем комментарии
             loadComments(taskId);
         } catch (error) {
@@ -571,7 +587,7 @@
             alert('Не удалось добавить комментарий. Пожалуйста, попробуйте позже.');
         }
     }
-    
+
     /**
      * Сохраняет задачу
      */
@@ -584,12 +600,12 @@
         const priority = document.getElementById('taskPriority').value;
         const assigneeId = document.getElementById('taskAssignee').value;
         const dueDate = document.getElementById('taskDueDate').value;
-        
+
         if (!title) {
             alert('Пожалуйста, введите заголовок задачи');
             return;
         }
-        
+
         try {
             const data = {
                 title,
@@ -600,7 +616,7 @@
                 due_date: dueDate || null,
                 project: parseInt(projectId)
             };
-            
+
             const response = await fetch(`/api/tasks/${taskId}/`, {
                 method: 'PUT',
                 headers: {
@@ -609,18 +625,18 @@
                 },
                 body: JSON.stringify(data)
             });
-            
+
             if (!response.ok) {
                 throw new Error('Не удалось сохранить задачу');
             }
-            
+
             // Закрываем модальное окно
             const modal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
             modal.hide();
-            
+
             // Перезагружаем список задач
             loadTasks();
-            
+
             // Показываем сообщение об успехе
             alert('Задача успешно сохранена');
         } catch (error) {
