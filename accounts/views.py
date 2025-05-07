@@ -53,7 +53,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
             return response
         except:
-            # Изменяем стандартное сообщение об ошибке
+            # Сообщение об ошибке для неверного логина/пароля
             return Response(
                 {"detail": "Проверьте логин или пароль"},
                 status=status.HTTP_400_BAD_REQUEST
