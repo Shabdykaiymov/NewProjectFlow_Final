@@ -43,15 +43,21 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     """
 
     def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
+        try:
+            response = super().post(request, *args, **kwargs)
 
-        # Если аутентификация успешна, добавляем информацию о пользователе
-        if response.status_code == 200:
-            user = User.objects.get(username=request.data.get('username'))
-            response.data['user'] = UserSerializer(user).data
+            # Если аутентификация успешна, добавляем информацию о пользователе
+            if response.status_code == 200:
+                user = User.objects.get(username=request.data.get('username'))
+                response.data['user'] = UserSerializer(user).data
 
-        return response
-
+            return response
+        except:
+            # Изменяем стандартное сообщение об ошибке
+            return Response(
+                {"detail": "Проверьте логин или пароль"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class UserInfoView(APIView):
     """
