@@ -113,3 +113,33 @@ class UserStatisticsView(APIView):
                 'tasks_count': tasks_count,
                 'completed_tasks_count': completed_tasks_count
             })
+
+class ProfileUpdateView(APIView):
+    """
+    Представление для обновления профиля пользователя
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        first_name = request.data.get('first_name')
+        last_name = request.data.get('last_name')
+        current_password = request.data.get('current_password')
+        new_password = request.data.get('new_password')
+
+        # Обновление имени и фамилии
+        if first_name is not None:
+            user.first_name = first_name
+        if last_name is not None:
+            user.last_name = last_name
+
+        # Обновление пароля если введены все необходимые поля
+        if current_password and new_password:
+            if not user.check_password(current_password):
+                return Response({"detail": "Неверный текущий пароль"}, status=status.HTTP_400_BAD_REQUEST)
+            user.set_password(new_password)
+
+        # Сохраняем изменения
+        user.save()
+
+        return Response({"detail": "Профиль успешно обновлен"})

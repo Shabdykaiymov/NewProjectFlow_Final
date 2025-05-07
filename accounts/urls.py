@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
-from .views import RegisterView, CustomTokenObtainPairView, UserInfoView, LogoutView,UserStatisticsView
+from .views import RegisterView, CustomTokenObtainPairView, UserInfoView, LogoutView,UserStatisticsView,ProfileUpdateView
 
 urlpatterns = [
     # Регистрация нового пользователя
@@ -16,6 +16,9 @@ urlpatterns = [
     # Информация о текущем пользователе
     path('me/', UserInfoView.as_view(), name='user_info'),
 
-    # Новый URL для получения статистики пользователя
+    # URL для получения статистики пользователя
     path('statistics/', UserStatisticsView.as_view(), name='user_statistics'),
+
+    # URL для Update профиля пользователя
+    path('profile/update/', ProfileUpdateView.as_view(), name='profile_update'),
 ]
