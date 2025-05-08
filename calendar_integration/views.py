@@ -2,7 +2,7 @@ from rest_framework import views, status, permissions
 from rest_framework.response import Response
 from django.shortcuts import redirect
 from django.conf import settings
-from datetime import datetime, timedelta
+from datetime import datetime
 from .services import GoogleCalendarService
 from accounts.models import UserProfile
 from django.http import HttpResponse

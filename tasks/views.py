@@ -219,11 +219,11 @@ class TaskViewSet(viewsets.ModelViewSet):
                 'description': event_description,
                 'start': {
                     'dateTime': start_time_str,
-                    'timeZone': 'Asia/Bishkek',  # Используйте ваш часовой пояс
+                    'timeZone': 'Asia/Bishkek',
                 },
                 'end': {
                     'dateTime': end_time_str,
-                    'timeZone': 'Asia/Bishkek',  # Используйте ваш часовой пояс
+                    'timeZone': 'Asia/Bishkek',
                 },
                 'reminders': {
                     'useDefault': True

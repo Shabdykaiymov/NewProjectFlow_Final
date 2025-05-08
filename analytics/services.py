@@ -1,9 +1,6 @@
 from django.db.models import Count, Q
 from tasks.models import Task
 from projects.models import Project
-from django.utils import timezone
-from datetime import timedelta
-
 
 class AnalyticsService:
     """
