@@ -413,7 +413,7 @@ class GoogleCalendarSuccessView(views.APIView):
                 </head>
                 <body>
                     <div class="warning">
-                        ⚠️ Авторизация успешна, но задача не найдена
+                        ️ Авторизация успешна, но задача не найдена
                     </div>
                     <div class="redirect">
                         Перенаправление на страницу проектов через 3 секунды...
@@ -439,7 +439,7 @@ class GoogleCalendarSuccessView(views.APIView):
             </head>
             <body>
                 <div class="error">
-                    ❌ Ошибка авторизации в Google Calendar
+                     Ошибка авторизации в Google Calendar
                 </div>
                 <div class="redirect">
                     Перенаправление на страницу проектов через 5 секунд...
