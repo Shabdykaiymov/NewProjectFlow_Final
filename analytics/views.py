@@ -96,11 +96,6 @@ class ExportReportView(views.APIView):
         # Устанавливаем название листа
         ws.title = "Отчет по задачам"
 
-        # Заголовки столбцов
-        headers = ['Статус', 'Количество задач']
-        for col, header in enumerate(headers, 1):
-            ws.cell(row=1, column=col, value=header)
-
         # Получаем данные
         user = request.user
         projects = Project.objects.filter(members=user)
@@ -108,7 +103,7 @@ class ExportReportView(views.APIView):
         # Базовый запрос
         tasks_query = Task.objects.filter(project__in=projects)
 
-        # Если указан ID проекта, фильтруем по нему
+        # Добавляем название проекта в первую строку
         if project_id:
             try:
                 project = Project.objects.get(id=project_id)
@@ -118,30 +113,31 @@ class ExportReportView(views.APIView):
                         status=status.HTTP_403_FORBIDDEN
                     )
                 tasks_query = tasks_query.filter(project_id=project_id)
+                ws.cell(row=1, column=1, value=f"Проект: {project.name}")
             except Project.DoesNotExist:
                 return Response(
                     {'error': 'Проект не найден'},
                     status=status.HTTP_404_NOT_FOUND
                 )
+        else:
+            ws.cell(row=1, column=1, value="Все проекты")
+
+        # Добавляем пустую строку
+        start_row = 3
+
+        # Заголовки столбцов на строке 3
+        headers = ['Статус', 'Количество задач']
+        for col, header in enumerate(headers, 1):
+            ws.cell(row=start_row, column=col, value=header)
 
         # Подсчитываем задачи по статусам
         status_data = tasks_query.values('status').annotate(count=Count('id'))
 
-        # Добавляем название проекта в отчет, если выбран конкретный проект
-        if project_id:
-            project = Project.objects.get(id=project_id)
-            ws.cell(row=3, column=1, value=f"Проект: {project.name}")
-            start_row = 5
-        else:
-            ws.cell(row=3, column=1, value="Все проекты")
-            start_row = 5
-
-        # Заполняем данные
-        row = start_row
+        # Заполняем данные начиная со строки 4
+        row = start_row + 1
         total_tasks = 0
 
         # Все возможные статусы
-        statuses = dict(Task.STATUS_CHOICES)
         for status_key, status_name in Task.STATUS_CHOICES:
             # Ищем количество для данного статуса
             count = 0
@@ -162,6 +158,18 @@ class ExportReportView(views.APIView):
         # Настраиваем ширину столбцов
         ws.column_dimensions['A'].width = 20
         ws.column_dimensions['B'].width = 15
+
+        # Делаем жирным заголовок проекта
+        from openpyxl.styles import Font
+        ws.cell(row=1, column=1).font = Font(bold=True)
+
+        # Делаем жирными заголовки столбцов
+        for col in range(1, 3):
+            ws.cell(row=start_row, column=col).font = Font(bold=True)
+
+        # Делаем жирной итоговую строку
+        ws.cell(row=row + 1, column=1).font = Font(bold=True)
+        ws.cell(row=row + 1, column=2).font = Font(bold=True)
 
         # Создаем HTTP ответ с Excel файлом
         response = HttpResponse(
