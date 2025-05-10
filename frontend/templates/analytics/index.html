@@ -6,13 +6,18 @@
 <div class="container">
     <h1 class="mb-4">Аналитика проектов</h1>
 
-    <!-- Выбор проекта -->
-    <div class="mb-4">
-        <label for="projectSelect" class="form-label">Выберите проект</label>
-        <select class="form-select" id="projectSelect">
+    <!-- Выбор проекта и кнопка экспорта -->
+    <div class="mb-4 d-flex align-items-center">
+        <label for="projectSelect" class="form-label me-3">Выберите проект</label>
+        <select class="form-select me-3" id="projectSelect" style="width: auto;">
             <option value="">Все проекты</option>
             <!-- Список проектов будет загружен через JavaScript -->
         </select>
+
+        <!-- Кнопка экспорта -->
+        <button class="btn btn-success" id="exportReportBtn">
+            <i class="fas fa-file-excel me-1"></i>Выгрузить отчет
+        </button>
     </div>
 
     <div class="row">
@@ -97,8 +102,58 @@
                 document.getElementById('projectProgressContainer').style.display = 'none';
             }
         });
+
+        // Обработчик кнопки экспорта
+        document.getElementById('exportReportBtn').addEventListener('click', function() {
+            // Получаем выбранный проект
+            const projectId = document.getElementById('projectSelect').value;
+
+            // Формируем URL для загрузки
+            let url = '/api/analytics/export-report/';
+            if (projectId) {
+                url += `?project_id=${projectId}`;
+            }
+
+            // Добавляем заголовок авторизации
+            const token = localStorage.getItem('access_token');
+
+            // Создаем временную ссылку для скачивания
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'report.xlsx';
+
+            // Для авторизации используем fetch с последующим скачиванием blob
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Не удалось загрузить отчет');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Создаем URL для blob
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `tasks_report_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('Ошибка при скачивании отчета:', error);
+                alert('Не удалось скачать отчет. Пожалуйста, попробуйте позже.');
+            });
+        });
     });
-  /**
+
+    /**
      * Загружает список проектов
      */
     async function loadProjects() {

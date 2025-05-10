@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     TasksByStatusView,
     TasksByUserView,
-    ProjectProgressView
+    ProjectProgressView,
+    ExportReportView
 )
 
 urlpatterns = [
@@ -14,4 +15,7 @@ urlpatterns = [
 
     # URL для получения прогресса по проекту
     path('project-progress/<int:project_id>/', ProjectProgressView.as_view(), name='project_progress'),
+
+    # URL для экспорта отчета в Excel
+    path('export-report/', ExportReportView.as_view(), name='export_report'),
 ]
