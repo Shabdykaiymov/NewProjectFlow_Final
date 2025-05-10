@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
 
-    # Наши приложения - добавим их позже
+    # Наши приложения
     'accounts',
     'projects',
     'tasks',
@@ -140,7 +140,7 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = DEBUG  # В production нужно указать конкретные домены
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings
