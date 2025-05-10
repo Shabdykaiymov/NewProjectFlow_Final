@@ -285,7 +285,7 @@ class GoogleCalendarSuccessView(views.APIView):
                 </head>
                 <body>
                     <div class="success">
-                        ✅ Авторизация в Google Calendar успешно завершена!
+                         Авторизация в Google Calendar успешно завершена!
                     </div>
                     <div class="redirect">
                         Перенаправление на страницу проектов через 3 секунды...
