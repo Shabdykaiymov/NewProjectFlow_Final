@@ -6,23 +6,28 @@
 <div class="container">
     <h1 class="mb-4">Аналитика проектов</h1>
 
-    <!-- Выбор проекта и кнопка экспорта -->
-    <div class="mb-4 d-flex align-items-center">
-        <label for="projectSelect" class="form-label me-3">Выберите проект</label>
-        <select class="form-select me-3" id="projectSelect" style="width: auto;">
-            <option value="">Все проекты</option>
-            <!-- Список проектов будет загружен через JavaScript -->
-        </select>
-
-        <!-- Кнопка экспорта -->
-        <button class="btn btn-success" id="exportReportBtn">
-            <i class="fas fa-file-excel me-1"></i>Выгрузить отчет
-        </button>
+    <!-- Выбор проекта и кнопка экспорта (адаптивный вариант) -->
+    <div class="mb-4">
+        <div class="row align-items-end g-3">
+            <div class="col-md-6 col-lg-4">
+                <label for="projectSelect" class="form-label">Выберите проект</label>
+                <select class="form-select" id="projectSelect">
+                    <option value="">Все проекты</option>
+                    <!-- Список проектов будет загружен через JavaScript -->
+                </select>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <!-- Кнопка экспорта (полная ширина на мобильных) -->
+                <button class="btn btn-success w-100" id="exportReportBtn">
+                    <i class="fas fa-file-excel me-1"></i>Выгрузить отчет
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="row">
         <!-- Статистика по статусам задач -->
-        <div class="col-md-6 mb-4">
+        <div class="col-lg-6 mb-4">
             <div class="analytics-card">
                 <div class="analytics-card-header">
                     <h5>Распределение задач по статусам</h5>
@@ -34,7 +39,7 @@
         </div>
 
         <!-- Статистика по исполнителям -->
-        <div class="col-md-6 mb-4">
+        <div class="col-lg-6 mb-4">
             <div class="analytics-card">
                 <div class="analytics-card-header">
                     <h5>Распределение задач по исполнителям</h5>
@@ -46,7 +51,7 @@
         </div>
 
         <!-- Прогресс проекта -->
-        <div class="col-md-12 mb-4" id="projectProgressContainer" style="display: none;">
+        <div class="col-12 mb-4" id="projectProgressContainer" style="display: none;">
             <div class="analytics-card">
                 <div class="analytics-card-header">
                     <h5>Прогресс проекта: <span id="projectName"></span></h5>

@@ -25,6 +25,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     search_fields = ['title', 'description']
     ordering_fields = ['created_at', 'due_date', 'priority', 'status']
     ordering = ['-created_at']
+    pagination_class = None
 
     def get_queryset(self):
         """

@@ -8,49 +8,68 @@
         <h1>Мои задачи</h1>
     </div>
 
+    <!-- Адаптивные фильтры -->
     <div class="mb-4">
-        <!-- Добавляем форму поиска -->
-        <form id="searchForm" class="d-flex mb-3">
-            <input type="text" class="form-control me-2" id="searchInput" placeholder="Поиск по заголовку, описанию или проекту...">
-            <button type="submit" class="btn btn-primary">Найти</button>
-        </form>
+        <!-- Форма поиска -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <form id="searchForm" class="d-flex">
+                    <input type="text" class="form-control me-2" id="searchInput" placeholder="Поиск по заголовку, описанию или проекту...">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </form>
+            </div>
+        </div>
 
-        <div class="filters d-flex flex-wrap gap-2">
-            <div class="btn-group" role="group">
-                <input type="radio" class="btn-check" name="taskTypeOptions" id="allTasksBtn" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="allTasksBtn">Все задачи</label>
+        <!-- Фильтры в адаптивной сетке -->
+        <div class="row g-3">
+            <!-- Тип задач (кнопки переключения) -->
+            <div class="col-12 col-lg-4">
+                <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="taskTypeOptions" id="allTasksBtn" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="allTasksBtn">Все задачи</label>
 
-                <input type="radio" class="btn-check" name="taskTypeOptions" id="myTasksBtn" autocomplete="off">
-                <label class="btn btn-outline-primary" for="myTasksBtn">Мои задачи</label>
+                    <input type="radio" class="btn-check" name="taskTypeOptions" id="myTasksBtn" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="myTasksBtn">Мои задачи</label>
 
-                <input type="radio" class="btn-check" name="taskTypeOptions" id="createdByMeBtn" autocomplete="off">
-                <label class="btn btn-outline-primary" for="createdByMeBtn">Созданные мной</label>
+                    <input type="radio" class="btn-check" name="taskTypeOptions" id="createdByMeBtn" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="createdByMeBtn">Созданные мной</label>
+                </div>
             </div>
 
-            <select class="form-select d-inline-block w-auto" id="projectFilter">
-                <option value="">Все проекты</option>
-                <!-- Список проектов будет загружен через JavaScript -->
-            </select>
+            <!-- Фильтр по проектам -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <select class="form-select w-100" id="projectFilter">
+                    <option value="">Все проекты</option>
+                    <!-- Список проектов будет загружен через JavaScript -->
+                </select>
+            </div>
 
-            <select class="form-select d-inline-block w-auto" id="statusFilter">
-                <option value="">Все статусы</option>
-                <option value="Новая">Новая</option>
-                <option value="В работе">В работе</option>
-                <option value="На проверке">На проверке</option>
-                <option value="Завершена">Завершена</option>
-            </select>
+            <!-- Фильтр по статусам -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <select class="form-select w-100" id="statusFilter">
+                    <option value="">Все статусы</option>
+                    <option value="Новая">Новая</option>
+                    <option value="В работе">В работе</option>
+                    <option value="На проверке">На проверке</option>
+                    <option value="Завершена">Завершена</option>
+                </select>
+            </div>
 
-            <select class="form-select d-inline-block w-auto" id="priorityFilter">
-                <option value="">Все приоритеты</option>
-                <option value="Критический">Критический</option>
-                <option value="Высокий">Высокий</option>
-                <option value="Средний">Средний</option>
-                <option value="Низкий">Низкий</option>
-                <option value="Без приоритета">Без приоритета</option>
-            </select>
+            <!-- Фильтр по приоритетам -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <select class="form-select w-100" id="priorityFilter">
+                    <option value="">Все приоритеты</option>
+                    <option value="Критический">Критический</option>
+                    <option value="Высокий">Высокий</option>
+                    <option value="Средний">Средний</option>
+                    <option value="Низкий">Низкий</option>
+                    <option value="Без приоритета">Без приоритета</option>
+                </select>
+            </div>
         </div>
     </div>
 
+    <!-- Список задач -->
     <div class="row" id="tasksContainer">
         <div class="col-12 text-center py-5">
             <div class="spinner-border text-primary" role="status">
