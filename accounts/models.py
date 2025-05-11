@@ -6,12 +6,11 @@ from django.dispatch import receiver
 
 class UserProfile(models.Model):
     """
-    Расширение стандартной модели пользователя Django
-    для хранения дополнительной информации
+    Доп поля для юзера
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
 
-    # Токен для интеграции с Google Calendar
+    # тут храним токены для гугл календаря
     google_calendar_token = models.TextField(null=True, blank=True)
     google_calendar_refresh_token = models.TextField(null=True, blank=True)
     google_calendar_token_expiry = models.DateTimeField(null=True, blank=True)
@@ -23,7 +22,7 @@ class UserProfile(models.Model):
         return f"Профиль {self.user.username}"
 
 
-# Сигнал для автоматического создания профиля при создании пользователя
+# когда создается юзер - автоматом создаем профиль юзера и далее сохраняем
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

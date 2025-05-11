@@ -10,8 +10,7 @@ class AnalyticsService:
     @staticmethod
     def get_tasks_by_status(user, project_id=None):
         """
-        Получает статистику задач по статусам для всех проектов пользователя
-        или для конкретного проекта
+        Получает статистику задач по статусам для всех проектов пользователя или для конкретного проекта
         """
         # Получаем все проекты пользователя
         projects = Project.objects.filter(members=user)
@@ -64,8 +63,7 @@ class AnalyticsService:
         if project_id:
             query = query.filter(project_id=project_id)
         elif user:
-            # Если проект не указан, но указан пользователь,
-            # фильтруем по проектам, где пользователь является участником
+            # если нет проекта - берем все проекты юзера
             query = query.filter(project__members=user)
 
         # Получаем статистику по исполнителям

@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
+"""Управление джанго проектом"""
 import os
 import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """Запуск команд"""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "newprojectflowapp.settings")
     try:
         from django.core.management import execute_from_command_line

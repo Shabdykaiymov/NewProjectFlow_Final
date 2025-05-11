@@ -10,7 +10,7 @@ from .serializers import UserSerializer, RegisterSerializer
 
 class RegisterView(generics.CreateAPIView):
     """
-    Представление для регистрации новых пользователей
+    Регистрация юзеров
     """
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
@@ -21,7 +21,7 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # Генерируем JWT токены для нового пользователя
+        # Генерируем JWT токены для нового юзера
         refresh = RefreshToken.for_user(user)
 
         response_data = {
@@ -37,8 +37,7 @@ class RegisterView(generics.CreateAPIView):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     """
-    Кастомное представление для получения JWT токенов
-    с дополнительной информацией о пользователе
+    Получение токенов с инфой о юзере
     """
 
     def post(self, request, *args, **kwargs):
@@ -60,7 +59,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 class UserInfoView(APIView):
     """
-    Представление для получения информации о текущем пользователе
+    Инфа о текущем юзере
     """
     permission_classes = [permissions.IsAuthenticated]
 
@@ -72,7 +71,7 @@ class UserInfoView(APIView):
 
 class LogoutView(APIView):
     """
-    Представление для выхода из системы (добавление токена в черный список)
+    Выход (блокировка токена)
     """
     permission_classes = [permissions.IsAuthenticated]
 
@@ -94,7 +93,7 @@ class LogoutView(APIView):
 
 class UserStatisticsView(APIView):
         """
-        Представление для получения статистики пользователя
+        Статистика юзера
         """
         permission_classes = [permissions.IsAuthenticated]
 
@@ -121,7 +120,7 @@ class UserStatisticsView(APIView):
 
 class ProfileUpdateView(APIView):
     """
-    Представление для обновления профиля пользователя
+    Обновление профиля
     """
     permission_classes = [permissions.IsAuthenticated]
 

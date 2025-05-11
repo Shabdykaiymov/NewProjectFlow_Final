@@ -5,7 +5,7 @@ from .models import UserProfile
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    """Сериализатор профиля пользователя"""
+    """Профиль юзера"""
 
     class Meta:
         model = UserProfile
@@ -14,7 +14,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Сериализатор пользователя для получения информации"""
+    """Инфа о юзере"""
     profile = UserProfileSerializer(read_only=True)
 
     class Meta:
@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    """Сериализатор для регистрации новых пользователей"""
+    """Регистрация"""
     password = serializers.CharField(
         write_only=True,
         required=True,
@@ -37,11 +37,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name']
 
     def validate(self, attrs):
-        # Проверка совпадения паролей
+        # проверяем что пароли одинаковые
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Пароли не совпадают"})
 
-        # Проверка уникальности email
+        # проверка уникальности email
         if User.objects.filter(email=attrs['email']).exists():
             raise serializers.ValidationError({"email": "Пользователь с таким email уже существует"})
 
@@ -51,7 +51,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         # Удаление password2 из validated_data
         validated_data.pop('password2')
 
-        # Создание пользователя
+        # Создание юзера
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -59,7 +59,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name', '')
         )
 
-        # Установка пароля (хэширование выполняет метод set_password)
+        # хешируем пароль через джанго
         user.set_password(validated_data['password'])
         user.save()
 
