@@ -6,7 +6,7 @@ from .views import ProjectViewSet
 router = DefaultRouter()
 router.register(r'', ProjectViewSet, basename='project')
 
-# Добавляем дополнительные URL для действий
+# Дополнительные URL для действий
 member_actions = [
     path('<int:pk>/add_member/', ProjectViewSet.as_view({'post': 'add_member'}), name='project-add-member'),
     path('<int:pk>/remove_member/', ProjectViewSet.as_view({'post': 'remove_member'}), name='project-remove-member'),
@@ -16,6 +16,6 @@ member_actions = [
 urlpatterns = [
     # Подключаем все URL из router
     path('', include(router.urls)),
-    # Добавляем URL действий
+    # Допка URL действий
     *member_actions,
 ]

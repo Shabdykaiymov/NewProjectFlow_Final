@@ -103,7 +103,7 @@ class ExportReportView(views.APIView):
         # Базовый запрос
         tasks_query = Task.objects.filter(project__in=projects)
 
-        # Добавляем название проекта в первую строку
+        # название проекта в первую строку
         if project_id:
             try:
                 project = Project.objects.get(id=project_id)
@@ -122,7 +122,7 @@ class ExportReportView(views.APIView):
         else:
             ws.cell(row=1, column=1, value="Все проекты")
 
-        # Добавляем пустую строку
+        # пустая строка
         start_row = 3
 
         # Заголовки столбцов на строке 3
@@ -151,23 +151,23 @@ class ExportReportView(views.APIView):
             total_tasks += count
             row += 1
 
-        # Добавляем итоговую строку
+        # итоговая строка
         ws.cell(row=row + 1, column=1, value="ИТОГО:")
         ws.cell(row=row + 1, column=2, value=total_tasks)
 
-        # Настраиваем ширину столбцов
-        ws.column_dimensions['A'].width = 20
+        # ширина столбцов
+        ws.column_dimensions['A'].width = 25
         ws.column_dimensions['B'].width = 15
 
-        # Делаем жирным заголовок проекта
+        # жирный заголовок проекта
         from openpyxl.styles import Font
         ws.cell(row=1, column=1).font = Font(bold=True)
 
-        # Делаем жирными заголовки столбцов
+        # жирные заголовки столбцов
         for col in range(1, 3):
             ws.cell(row=start_row, column=col).font = Font(bold=True)
 
-        # Делаем жирной итоговую строку
+        # жирная итоговая строка
         ws.cell(row=row + 1, column=1).font = Font(bold=True)
         ws.cell(row=row + 1, column=2).font = Font(bold=True)
 

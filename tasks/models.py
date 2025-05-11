@@ -153,7 +153,7 @@ def update_google_calendar_event(sender, instance, **kwargs):
             from django.conf import settings
             from datetime import timedelta
 
-            # Получаем профиль пользователя
+            # Получаем профиль юзера
             user_profile = instance.assignee.profile
 
             # Создаем объект credentials из сохраненных токенов

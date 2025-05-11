@@ -6,7 +6,7 @@ class GoogleCalendarService:
     """
     Сервис для работы с Google Calendar API
     """
-    # Области доступа (scopes), которые нам нужны
+    # права доступа для гугла
     SCOPES = ['https://www.googleapis.com/auth/calendar']
 
     @staticmethod

@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/calendar/', include('calendar_integration.urls')),
     path('api/analytics/', include('analytics.urls')),
 
-    # Добавляем URL-схемы для браузерного API
+    # URL-схемы для браузерного API
     path('api-auth/', include('rest_framework.urls')),
 
     # Frontend URLs
@@ -29,6 +29,6 @@ urlpatterns = [
     path('logout/', frontend_views.logout_view, name='logout')
 ]
 
-# Добавляем статические файлы в режиме разработки
+# статика для дев режима
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

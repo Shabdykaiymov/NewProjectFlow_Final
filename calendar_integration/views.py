@@ -8,7 +8,7 @@ from accounts.models import UserProfile
 from django.http import HttpResponse
 import logging
 
-# Настраиваем логгер
+# логгер
 logger = logging.getLogger('newprojectflowapp')
 
 
@@ -33,7 +33,7 @@ class GoogleAuthURLView(views.APIView):
         request.session['google_auth_state'] = state
         logger.info(f"Сохраняем состояние в сессии: {state}")
 
-        # Явно сохраняем сессию
+        # сохраняем сессию
         request.session.save()
 
         response = Response({'auth_url': auth_url})
@@ -78,8 +78,6 @@ class GoogleAuthCallbackView(views.APIView):
             try:
                 # Проверяем все профили, где есть этот state
                 from accounts.models import UserProfile
-                # Здесь можно добавить логику поиска пользователя по state
-                # Но это сложнее, поэтому используем другой подход
                 pass
             except Exception as e:
                 logger.error(f"Ошибка при поиске пользователя: {str(e)}")
@@ -145,7 +143,7 @@ class GoogleAuthCallbackView(views.APIView):
                     project_id = task.project.id
                     logger.info(f"Задача {task_id} найдена, принадлежит проекту {project_id}")
 
-                    # Простой и надежный JavaScript для синхронизации
+                    # js для синхронизации
                     sync_script = f"""
                     <script>
                         function syncTask() {{
@@ -261,7 +259,7 @@ class GoogleCalendarSuccessView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Изначально проверяем токены авторизации пользователя
+        # проверяем токены юзера
         user_profile = request.user.profile
         if user_profile.google_calendar_token:
             # Проверяем, есть ли ID задачи в URL параметрах

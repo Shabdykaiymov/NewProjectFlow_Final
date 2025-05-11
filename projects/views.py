@@ -19,13 +19,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Возвращает только проекты, в которых пользователь является участником,
-        с возможностью поиска по названию и описанию
+        Возвращает только проекты, в которых пользователь является участником,с возможностью поиска по названию и описанию
         """
         user = self.request.user
         queryset = Project.objects.filter(members=user).order_by('-created_at')
 
-        # Добавляем поиск
+        # Поиск
         search_query = self.request.query_params.get('search', None)
         if search_query:
             queryset = queryset.filter(

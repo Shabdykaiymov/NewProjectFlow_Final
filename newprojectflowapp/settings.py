@@ -3,13 +3,13 @@ from datetime import timedelta
 from decouple import config
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# базовая директория проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# секретный ключ (не показывать никому!)
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# дебаг режим (выключить на проде!)
 DEBUG = config('DEBUG', default='False') == 'True'
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
